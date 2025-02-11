@@ -10,7 +10,9 @@ const ProjectDetails = () => {
   useEffect(() => {
     const getProject = async () => {
       const data = await fetchProjectBySlug(slug);
-      setProject(data);
+      if (data) {
+        setProject(data);
+      }
     };
 
     getProject();
@@ -20,15 +22,28 @@ const ProjectDetails = () => {
 
   if (!project) return <p>Loading...</p>;
 
+  const extractTextFromContent = (contentArray) => {
+    if (!Array.isArray(contentArray)) return "";
+    
+    return contentArray
+      .map((block) =>
+        block.children
+          ? block.children.map((child) => child.text).join(" ")
+          : ""
+      )
+      .join("\n\n"); // Ajoute un saut de ligne entre les paragraphes
+  };
+
+  const markdownContent = extractTextFromContent(project.contenu);
+  const htmlContent = converter.makeHtml(markdownContent);
+
   return (
-    <div>
-      <h1>{project.title}</h1>
-      <p>{project.description}</p>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: converter.makeHtml(project.content),
-        }}
-      />
+    <div className="container">
+      <div className="project-details">
+        <h1>{project.titre}</h1>
+        <p>{project.description}</p>
+        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+      </div>
     </div>
   );
 };

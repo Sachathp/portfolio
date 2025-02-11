@@ -8,10 +8,7 @@ const ProjectsPage = () => {
 
   useEffect(() => {
     const getProjects = async () => {
-      console.log("🚀 `useEffect` lancé !");
       const data = await fetchProjects();
-      console.log("Projects Data:", data);
-      console.log("📡 Données reçues de l'API :", data);
       setProjects(data);
     };
 
@@ -21,23 +18,25 @@ const ProjectsPage = () => {
   const converter = new Showdown.Converter();
 
   return (
-    <div>
-      <h1>Projects</h1>
-      {projects.map((project) => (
-        
-        <div key={project.id}>
-          <h2>{project.title}</h2>
-          <p>{project.description}</p>
-          <Link to={`/projects/${project.slug}`}>Voir le projet</Link>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: converter.makeHtml(project.content),
-            }}
-          />
-        </div>
-      ))}
+    <div className="container">
+    <h1>Projets</h1>
+    <div className="project-list">
+      {projects.length === 0 ? (
+        <p>Aucun projet trouvé.</p>
+      ) : (
+        projects.map((project) => (
+          <div key={project.id} className="project-card">
+            <h2>{project.titre || "Titre non disponible"}</h2>
+            <p>{project.description || "Description non disponible"}</p>
+            {project.slug && (
+              <Link to={`/projects/${project.slug}`}>Voir le projet →</Link>
+            )}
+          </div>
+        ))
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default ProjectsPage;
