@@ -2,10 +2,12 @@ import React from "react";
 import AppRoutes from "./routes";
 import ProjectsPage from "./ProjectsPage";
 import ProjectDetails from "./ProjectDetails";
+import ThemeToggleButton from "./ThemeToggleButton";
 
 const App = () => (
   <div>
-  <AppRoutes /> {/* Utiliser les routes définies dans routes.jsx */}
+  <ThemeToggleButton />
+  <AppRoutes /> 
 </div>
 );
 
