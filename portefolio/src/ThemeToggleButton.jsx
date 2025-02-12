@@ -6,7 +6,7 @@ const ThemeToggleButton = () => {
 
   return (
     <button className="theme-toggle" onClick={toggleTheme}>
-      {isDarkMode ? "🌞 Mode Clair" : "🌙 Mode Sombre"}
+      {isDarkMode ? "🌞 " : "🌙"}
     </button>
   );
 };

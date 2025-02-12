@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchProjectBySlug } from "./api";
 import Showdown from "showdown";
+import { Link } from "react-router-dom";
+
 
 const ProjectDetails = () => {
   const { slug } = useParams();
@@ -24,15 +26,25 @@ const ProjectDetails = () => {
 
   const extractTextFromContent = (contentArray) => {
     if (!Array.isArray(contentArray)) return "";
-    
+  
     return contentArray
       .map((block) =>
         block.children
-          ? block.children.map((child) => child.text).join(" ")
+          ? block.children
+              .map((child) => {
+                if (child.type === "text") {
+                  return child.text;
+                } else if (child.type === "link") {
+                  return child.url; 
+                }
+                return "";
+              })
+              .join("")
           : ""
       )
-      .join("\n\n"); // Ajoute un saut de ligne entre les paragraphes
+      .join("\n\n"); 
   };
+  
 
   const markdownContent = extractTextFromContent(project.contenu);
   const htmlContent = converter.makeHtml(markdownContent);
@@ -44,7 +56,11 @@ const ProjectDetails = () => {
         <p>{project.description}</p>
         <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
       </div>
-    </div>
+      <Link to="/">
+        <button className="btn-return">Retour aux projets</button>
+      </Link>
+    
+  </div>
   );
 };
 

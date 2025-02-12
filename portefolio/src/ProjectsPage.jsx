@@ -26,11 +26,10 @@ const ProjectsPage = () => {
       ) : (
         projects.map((project) => (
           <div key={project.id} className="project-card">
-            <h2>{project.titre || "Titre non disponible"}</h2>
+            <h2><Link to={`/projects/${project.slug}`}>{project.titre}</Link></h2>
             <p>{project.description || "Description non disponible"}</p>
-            {project.slug && (
-              <Link to={`/projects/${project.slug}`}>Voir le projet →</Link>
-            )}
+            <p>{project.date}</p>
+           
           </div>
         ))
       )}
